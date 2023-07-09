@@ -29,8 +29,14 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/chat:${{ github.head_ref }}
 
-      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@main
+      - id: "auth"
+        name: Authenticate to GCP
+        uses: google-github-actions/auth@v0
         with:
-          version: '290.0.1'
-          service_account_key: ${{ secrets.GCP_ACCESS_KEY }}
-          project_id: ${{ secrets.GCP_PROJECT }}
+          credentials_json: ${{ secrets.GCP_ACCESS_KEY }}
+
+      - name: server-on
+        run: |-
+          gcloud compute ssh --project=${{ secrets.GCP_PROJECT }} --zone=${{ secrets.GCP_INSTANCE_ZONE }} ${{ secrets.GCP_INSTANCE }} -- \
+          "sudo kubectl get nodes
+          "
