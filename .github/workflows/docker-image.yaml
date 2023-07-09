@@ -54,6 +54,5 @@ jobs:
 
       - name: server-on
         run: |-
-          gcloud compute ssh --project=${{ secrets.GCP_PROJECT }} --zone=${{ secrets.GCP_INSTANCE_ZONE }} ${{ secrets.GCP_INSTANCE }} -- \
-          "sudo kubectl set image deployments.apps/${{ env.DEPLOYMENT_NAME }} ${{ env.DEPLOYMENT_NAME }}=${{ github.repository_owner }}/${{ steps.metadata.outputs.tags }}
-          "
+          gcloud compute ssh --zone "${{ secrets.GCP_INSTANCE_ZONE }}" "${{ secrets.GCP_INSTANCE }}" --project "${{ secrets.GCP_PROJECT }}" -- \
+          "sudo kubectl set image deployments.apps/${{ env.DEPLOYMENT_NAME }} ${{ env.DEPLOYMENT_NAME }}=${{ github.repository_owner }}/${{ steps.metadata.outputs.tags }}"
