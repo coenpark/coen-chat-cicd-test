@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package search;
+
+import "google/api/annotations.proto";
+
+option go_package = "coen-chat/protos/search";
+
+service SearchService {
+  rpc SearchMessage(SearchMessageRequest) returns (SearchMessageResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/search"
+    };
+  };
+}
+
+message SearchMessageRequest {
+  string from = 1;
+  string to = 2;
+  string keyword = 3;
+}
+
+message Message {
+  string message_id = 1;
+  string channel_id = 2;
+  string email = 3;
+  string content = 4;
+  string created_at = 5;
+  string updated_at = 6;
+}
+
+message TokenResponse {
+  string access_token = 1;
+  string refresh_token = 2;
+}
+
+message SearchMessageResponse {
+  repeated Message message = 1;
+  TokenResponse tokenResponse = 2;
+}

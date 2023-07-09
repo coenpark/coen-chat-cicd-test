@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+package message;
+
+import "google/api/annotations.proto";
+
+option go_package = "coen-chat/protos/message";
+
+service MessageService {
+  rpc CreateMessage(CreateMessageRequest) returns (CreateMessageResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/messages"
+      body: "*"
+    };
+  };
+  rpc UpdateMessage(UpdateMessageRequest) returns (UpdateMessageResponse) {
+    option (google.api.http) = {
+      patch: "/api/v1/messages/{message_id}"
+      body: "*"
+    };
+  };
+  rpc DeleteMessage(DeleteMessageRequest) returns (DeleteMessageResponse) {
+    option (google.api.http) = {
+      delete: "/api/v1/messages/{message_id}"
+    };
+  };
+  rpc GetMessageList(GetMessageListRequest) returns (GetMessageListResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/messages/{channel_id}"
+    };
+  };
+}
+
+message Message {
+  string message_id = 1;
+  string email = 2;
+  string content = 3;
+  string created_at = 4;
+  string updated_at = 5;
+}
+
+message TokenResponse {
+  string access_token = 1;
+  string refresh_token = 2;
+}
+
+message CreateMessageRequest {
+  string message_id = 1;
+  uint64 channel_id = 2;
+  string content = 3;
+  string created_at = 4;
+  string updated_at = 5;
+}
+
+message UpdateMessageRequest {
+  string message_id = 1;
+  string content = 2;
+}
+
+message DeleteMessageRequest {
+  string message_id = 1;
+}
+
+message CreateMessageResponse {
+  TokenResponse tokenResponse = 1;
+}
+
+message UpdateMessageResponse {
+  TokenResponse tokenResponse = 1;
+}
+
+message DeleteMessageResponse {
+  TokenResponse tokenResponse = 1;
+}
+
+message GetMessageListRequest {
+  uint64 channel_id = 1;
+  int32 offset = 2;
+}
+
+message GetMessageListResponse {
+  repeated Message message = 1;
+  TokenResponse tokenResponse = 2;
+}
