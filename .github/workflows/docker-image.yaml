@@ -41,7 +41,7 @@ jobs:
           push: true
           tags: |
             ${{ github.repository_owner }}/chat:latest
-            ${{ steps.metadata.outputs.tags }}
+            ${{ github.repository_owner }}/${{ steps.metadata.outputs.tags }}
 
       - id: "auth"
         name: Authenticate to GCP
