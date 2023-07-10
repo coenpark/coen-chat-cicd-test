@@ -37,6 +37,11 @@ jobs:
       # 삭제
       # 삭제
       # 삭제
+      - id: "auth"
+        name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_ACCESS_KEY }}
       - id: 'compute-ssh'
         uses: 'google-github-actions/ssh-compute@v0'
         with:
@@ -61,11 +66,11 @@ jobs:
             ${{ github.repository_owner }}/chat:latest
             ${{ github.repository_owner }}/${{ steps.metadata.outputs.tags }}
 
-      - id: "auth"
-        name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v1
-        with:
-          credentials_json: ${{ secrets.GCP_ACCESS_KEY }}
+#      - id: "auth"
+#        name: Authenticate to Google Cloud
+#        uses: google-github-actions/auth@v1
+#        with:
+#          credentials_json: ${{ secrets.GCP_ACCESS_KEY }}
 #
 ## 이걸로 교체하자
 #      - id: 'compute-ssh'
