@@ -48,7 +48,8 @@ jobs:
           instance_name: '${{ secrets.GCP_INSTANCE2 }}'
           zone: '${{ secrets.GCP_INSTANCE_ZONE }}'
           ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY }}'
-          command: 'sudo kubectl set image deployments.apps/${{ env.DEPLOYMENT_NAME }} ${{ env.DEPLOYMENT_NAME }}=${{ github.repository_owner }}/${{ steps.metadata.outputs.tags }}'
+#          command: 'sudo kubectl set image deployments.apps/${{ env.DEPLOYMENT_NAME }} ${{ env.DEPLOYMENT_NAME }}=${{ github.repository_owner }}/${{ steps.metadata.outputs.tags }}'
+          command: 'echo Hello World!'
       # 삭제
       # 삭제
       # 삭제
