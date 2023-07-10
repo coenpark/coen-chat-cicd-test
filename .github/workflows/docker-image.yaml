@@ -35,28 +35,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-
-      # 삭제
-      # 삭제
-      # 삭제
-      - id: "auth"
-        name: 'Authenticate to Google Cloud'
-        uses: 'google-github-actions/auth@v1'
-        with:
-          credentials_json: '${{ secrets.GCP_ACCESS_KEY }}'
-
-      - id: 'compute-ssh'
-        uses: 'google-github-actions/ssh-compute@v0'
-        with:
-          instance_name: '${{ env.GCP_INSTANCE }}'
-          zone: '${{ env.GCP_ZONE }}'
-          ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY }}'
-#          command: 'sudo kubectl set image deployments.apps/${{ env.DEPLOYMENT_NAME }} ${{ env.DEPLOYMENT_NAME }}=${{ github.repository_owner }}/${{ steps.metadata.outputs.tags }}'
-          command: 'echo Hello World!'
-      # 삭제
-      # 삭제
-      # 삭제
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
@@ -70,22 +48,21 @@ jobs:
             ${{ github.repository_owner }}/chat:latest
             ${{ github.repository_owner }}/${{ steps.metadata.outputs.tags }}
 
-#      - id: "auth"
-#        name: Authenticate to Google Cloud
-#        uses: google-github-actions/auth@v1
-#        with:
-#          credentials_json: ${{ secrets.GCP_ACCESS_KEY }}
-#
-## 이걸로 교체하자
-#      - id: 'compute-ssh'
-#        uses: 'google-github-actions/ssh-compute@v0'
-#        with:
-#          instance_name: '${{ secrets.GCP_INSTANCE2 }}'
-#          zone: '${{ secrets.GCP_INSTANCE_ZONE }}'
-#          ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY }}'
-#          command: 'sudo kubectl set image deployments.apps/${{ env.DEPLOYMENT_NAME }} ${{ env.DEPLOYMENT_NAME }}=${{ github.repository_owner }}/${{ steps.metadata.outputs.tags }}'
-#
-## 이건 아닌거같음
+      - id: "auth"
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          credentials_json: '${{ secrets.GCP_ACCESS_KEY }}'
+
+      - id: 'test'
+        uses: 'google-github-actions/ssh-compute@v0'
+        with:
+          instance_name: '${{ env.GCP_INSTANCE }}'
+          zone: '${{ env.GCP_ZONE }}'
+          ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY }}'
+          command: 'sudo kubectl set image deployments.apps/${{ env.DEPLOYMENT_NAME }} ${{ env.DEPLOYMENT_NAME }}=${{ github.repository_owner }}/${{ steps.metadata.outputs.tags }}'
+
+# 이건 아닌거같음
 #      - name: server-on
 #        run: |-
 #          gcloud compute ssh --zone "${{ secrets.GCP_INSTANCE_ZONE }}" "${{ secrets.GCP_INSTANCE }}" --project "${{ secrets.GCP_PROJECT }}" --secret "" \
