@@ -79,6 +79,7 @@ func main() {
 		authPath.POST("/login", gin.WrapF(gwmux.ServeHTTP))
 	}
 	//r.Run(os.Getenv("GIN_GONIC_SOCKET"))
+	log.Println("CICD TEST LOG")
 	r.Run(os.Getenv("GIN_GONIC_SOCKET"))
 	log.Println("Serving gRPC-Gateway on ", os.Getenv("GATEWAY_SOCKET"))
 }
