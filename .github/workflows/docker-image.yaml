@@ -47,12 +47,22 @@ jobs:
             ${{ github.repository_owner }}/${{ steps.metadata.outputs.tags }}
 
       - id: "auth"
-        name: Authenticate to GCP
-        uses: google-github-actions/auth@v0
+        name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
         with:
           credentials_json: ${{ secrets.GCP_ACCESS_KEY }}
 
-      - name: server-on
-        run: |-
-          gcloud compute ssh --zone "${{ secrets.GCP_INSTANCE_ZONE }}" "${{ secrets.GCP_INSTANCE }}" --project "${{ secrets.GCP_PROJECT }}" -- \
-          "sudo kubectl set image deployments.apps/${{ env.DEPLOYMENT_NAME }} ${{ env.DEPLOYMENT_NAME }}=${{ github.repository_owner }}/${{ steps.metadata.outputs.tags }}"
+# 이걸로 교체하자
+      - id: 'compute-ssh'
+        uses: 'google-github-actions/ssh-compute@v0'
+        with:
+          instance_name: '${{ secrets.GCP_INSTANCE }}'
+          zone: '${{ secrets.GCP_INSTANCE_ZONE }}'
+          ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY }}'
+          command: 'sudo kubectl set image deployments.apps/${{ env.DEPLOYMENT_NAME }} ${{ env.DEPLOYMENT_NAME }}=${{ github.repository_owner }}/${{ steps.metadata.outputs.tags }}'
+#
+## 이건 아닌거같음
+#      - name: server-on
+#        run: |-
+#          gcloud compute ssh --zone "${{ secrets.GCP_INSTANCE_ZONE }}" "${{ secrets.GCP_INSTANCE }}" --project "${{ secrets.GCP_PROJECT }}" --secret "" \
+#          "sudo kubectl set image deployments.apps/${{ env.DEPLOYMENT_NAME }} ${{ env.DEPLOYMENT_NAME }}=${{ github.repository_owner }}/${{ steps.metadata.outputs.tags }}"
