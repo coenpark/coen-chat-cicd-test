@@ -2,7 +2,6 @@
 
 # Build the application from source
 FROM --platform=linux/amd64 golang:1.20 AS build-stage
-ENV GO111MODULE=on
 
 WORKDIR /app
 
