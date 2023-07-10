@@ -35,9 +35,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
@@ -61,9 +58,3 @@ jobs:
           zone: '${{ env.GCP_ZONE }}'
           ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY }}'
           command: 'sudo kubectl set image deployments.apps/${{ env.DEPLOYMENT_NAME }} ${{ env.DEPLOYMENT_NAME }}=${{ github.repository_owner }}/${{ steps.metadata.outputs.tags }}'
-
-# 이건 아닌거같음
-#      - name: server-on
-#        run: |-
-#          gcloud compute ssh --zone "${{ secrets.GCP_INSTANCE_ZONE }}" "${{ secrets.GCP_INSTANCE }}" --project "${{ secrets.GCP_PROJECT }}" --secret "" \
-#          "sudo kubectl set image deployments.apps/${{ env.DEPLOYMENT_NAME }} ${{ env.DEPLOYMENT_NAME }}=${{ github.repository_owner }}/${{ steps.metadata.outputs.tags }}"
