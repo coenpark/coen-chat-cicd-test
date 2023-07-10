@@ -33,6 +33,21 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
+
+      # 삭제
+      # 삭제
+      # 삭제
+      - id: 'compute-ssh'
+        uses: 'google-github-actions/ssh-compute@v0'
+        with:
+          instance_name: '${{ secrets.GCP_INSTANCE2 }}'
+          zone: '${{ secrets.GCP_INSTANCE_ZONE }}'
+          ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY }}'
+          command: 'sudo kubectl set image deployments.apps/${{ env.DEPLOYMENT_NAME }} ${{ env.DEPLOYMENT_NAME }}=${{ github.repository_owner }}/${{ steps.metadata.outputs.tags }}'
+      # 삭제
+      # 삭제
+      # 삭제
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
@@ -51,15 +66,15 @@ jobs:
         uses: google-github-actions/auth@v1
         with:
           credentials_json: ${{ secrets.GCP_ACCESS_KEY }}
-
-# 이걸로 교체하자
-      - id: 'compute-ssh'
-        uses: 'google-github-actions/ssh-compute@v0'
-        with:
-          instance_name: '${{ secrets.GCP_INSTANCE }}'
-          zone: '${{ secrets.GCP_INSTANCE_ZONE }}'
-          ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY }}'
-          command: 'sudo kubectl set image deployments.apps/${{ env.DEPLOYMENT_NAME }} ${{ env.DEPLOYMENT_NAME }}=${{ github.repository_owner }}/${{ steps.metadata.outputs.tags }}'
+#
+## 이걸로 교체하자
+#      - id: 'compute-ssh'
+#        uses: 'google-github-actions/ssh-compute@v0'
+#        with:
+#          instance_name: '${{ secrets.GCP_INSTANCE2 }}'
+#          zone: '${{ secrets.GCP_INSTANCE_ZONE }}'
+#          ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY }}'
+#          command: 'sudo kubectl set image deployments.apps/${{ env.DEPLOYMENT_NAME }} ${{ env.DEPLOYMENT_NAME }}=${{ github.repository_owner }}/${{ steps.metadata.outputs.tags }}'
 #
 ## 이건 아닌거같음
 #      - name: server-on
