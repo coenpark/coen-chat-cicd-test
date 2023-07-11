@@ -11,7 +11,7 @@ RUN go mod download
 
 COPY ./ ./
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /chat .
+RUN CGO_ENABLED=0 GOOS=linux go build -o /chat ./cmd
 
 # Run the tests in the container. No code for test...
 FROM build-stage AS run-test-stage
