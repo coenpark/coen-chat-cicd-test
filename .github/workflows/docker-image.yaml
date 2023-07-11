@@ -1,4 +1,4 @@
-name: Build and Push Docker Image
+name: Build and Push Docker Image and Deploy to k8s
 
 on:
   push:
@@ -7,14 +7,11 @@ on:
 
 env:
   DEPLOYMENT_NAME: coen-chat-deployment
-  GCP_ZONE: us-west4-b
-  GCP_INSTANCE: instance-2
+  IMG_NAME: chat
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      IMG_NAME: chat
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -54,7 +51,25 @@ jobs:
       - id: 'test'
         uses: 'google-github-actions/ssh-compute@v0'
         with:
-          instance_name: '${{ env.GCP_INSTANCE }}'
-          zone: '${{ env.GCP_ZONE }}'
+          instance_name: '${{ secrets.GCP_INSTANCE }}'
+          zone: '${{ secrets.GCP_INSTANCE_ZONE }}'
           ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY }}'
           command: 'sudo kubectl set image deployments.apps/${{ env.DEPLOYMENT_NAME }} ${{ env.DEPLOYMENT_NAME }}=${{ github.repository_owner }}/${{ steps.metadata.outputs.tags }}'
+
+  switFailNotify:
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: curl to swit
+        run: |-
+          'curl -X POST -H "Content-type: application/json" --data "{\"text\":\"Github action fail\"}" https://hook.swit.io/chat/230704020620x2fEHM4/lV8EFcPY5xpR7qldXhZO'
+
+  switSuccessNotify:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: curl to swit
+        run: |-
+          'curl -X POST -H "Content-type: application/json" --data "{\"text\":\"Github action success\"}" https://hook.swit.io/chat/230704020620x2fEHM4/lV8EFcPY5xpR7qldXhZO'
+        
+
