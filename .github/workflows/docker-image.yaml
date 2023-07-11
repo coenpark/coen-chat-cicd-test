@@ -58,10 +58,10 @@ jobs:
 
       - name: switFailNotify
         if: failure()
-        run: |-
-          '${{ secrets.SWIT_NOTI_FAIL }}'
+        run: |
+          ${{ secrets.SWIT_NOTI_FAIL }}
 
       - name: switSuccessNotify
         if: success()
-        run: |-
-          '${{ secrets.SWIT_NOTI_SUCC }}'
+        run: |
+          ${{ secrets.SWIT_NOTI_SUCC }}
