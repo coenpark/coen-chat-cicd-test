@@ -57,11 +57,11 @@ jobs:
           command: 'sudo kubectl set image deployments.apps/${{ env.DEPLOYMENT_NAME }} ${{ env.DEPLOYMENT_NAME }}=${{ github.repository_owner }}/${{ steps.metadata.outputs.tags }}'
 
       - name: switFailNotify
-        if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+        if: failure()
         run: |-
           '${{ secrets.SWIT_NOTI_FAIL }}'
 
       - name: switSuccessNotify
-        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        if: success()
         run: |-
           '${{ secrets.SWIT_NOTI_SUCC }}'
