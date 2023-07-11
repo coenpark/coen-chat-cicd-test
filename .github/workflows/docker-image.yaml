@@ -56,20 +56,12 @@ jobs:
           ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY }}'
           command: 'sudo kubectl set image deployments.apps/${{ env.DEPLOYMENT_NAME }} ${{ env.DEPLOYMENT_NAME }}=${{ github.repository_owner }}/${{ steps.metadata.outputs.tags }}'
 
-  switFailNotify:
-    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: curl to swit
+      - name: switFailNotify
+        if: ${{ github.event.workflow_run.conclusion == 'failure' }}
         run: |-
-          'curl -X POST -H "Content-type: application/json" --data "{\"text\":\"Github action fail\"}" https://hook.swit.io/chat/230704020620x2fEHM4/lV8EFcPY5xpR7qldXhZO'
+          '${{ secrets.SWIT_NOTI_FAIL }}'
 
-  switSuccessNotify:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: curl to swit
+      - name: switSuccessNotify
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
         run: |-
-          'curl -X POST -H "Content-type: application/json" --data "{\"text\":\"Github action success\"}" https://hook.swit.io/chat/230704020620x2fEHM4/lV8EFcPY5xpR7qldXhZO'
-        
-
+          '${{ secrets.SWIT_NOTI_SUCC }}'
