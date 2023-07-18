@@ -8,8 +8,6 @@ import (
 )
 
 func ConnectRedis() *redis.Client {
-	//dsn := os.Getenv("GCP_REDIS_DSN")
-	//password := os.Getenv("REDIS_PASSWORD")
 	dsn := os.Getenv("GCP_REDIS_DSN")
 	password := os.Getenv("REDIS_PASSWORD")
 	client := redis.NewClient(&redis.Options{
@@ -19,7 +17,7 @@ func ConnectRedis() *redis.Client {
 	})
 	_, err := client.Ping().Result()
 	if err != nil {
-		log.Fatalln("Failed to connect Redissss")
+		log.Fatalln("Failed to connect Redis", err)
 	}
 	log.Println("redis connected")
 	return client
