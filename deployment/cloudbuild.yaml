@@ -3,7 +3,7 @@ options:
 
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'build', '-t', 'us-central1-docker.pkg.dev/k8s-project-387912/coen-chat/chat', '-f', './', '.']
+    args: [ 'build', '-t', 'us-west4-docker.pkg.dev/k8s-project-387912/coen-chat/chat', '-f', './', '.']
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/k8s-project-387912/coen-chat/chat']
-images: ['us-central1-docker.pkg.dev/k8s-project-387912/coen-chat/chat']
+    args: ['push', 'us-west4-docker.pkg.dev/k8s-project-387912/coen-chat/chat']
+images: ['us-west4-docker.pkg.dev/k8s-project-387912/coen-chat/chat']
