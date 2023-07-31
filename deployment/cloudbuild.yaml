@@ -5,6 +5,12 @@ steps:
 # Docker push to Google Artifact Registry
 - name: 'gcr.io/cloud-builders/docker'
   args: [ 'push', 'gcr.io/$PROJECT_ID/coen-chat:$SHORT_SHA']
+  # Set Kubernetes Deployment Image
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: [
+    'compute', 'ssh', 'instance-2', '--region', 'us-west4',
+    '--command', 'sudo kubectl set image deployments.apps/coen-chat-deployment coen-chat-deployment=coen-chat:$SHORT_SHA'
+  ]
 
 options:
   logging: CLOUD_LOGGING_ONLY
