@@ -1,6 +1,3 @@
-options:
-  logging: NONE
-
 steps:
 # Docker Build
 - name: 'gcr.io/cloud-builders/docker'
@@ -8,4 +5,7 @@ steps:
 # Docker push to Google Artifact Registry
 - name: 'gcr.io/cloud-builders/docker'
   args: [ 'push', 'gcr.io/$PROJECT_ID/coen-chat:$SHORT_SHA' ]
-images: ['us-west4-docker.pkg.dev/k8s-project-387912/coen-chat/chat']
+images: ['us-west4-docker.pkg.dev/k8s-project-387912/coen-chat']
+
+options:
+  logging: CLOUD_LOGGING_ONLY
