@@ -1,15 +1,16 @@
 steps:
-# Docker Build
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/$PROJECT_ID/coen-chat:$SHORT_SHA', '.']
-# Docker push to Google Artifact Registry
-- name: 'gcr.io/cloud-builders/docker'
-  args: [ 'push', 'gcr.io/$PROJECT_ID/coen-chat:$SHORT_SHA']
-  # Set Kubernetes Deployment Image
+## Docker Build
+#- name: 'gcr.io/cloud-builders/docker'
+#  args: ['build', '-t', 'gcr.io/$PROJECT_ID/coen-chat:$SHORT_SHA', '.']
+## Docker push to Google Artifact Registry
+#- name: 'gcr.io/cloud-builders/docker'
+#  args: [ 'push', 'gcr.io/$PROJECT_ID/coen-chat:$SHORT_SHA']
+#  # Set Kubernetes Deployment Image
 - name: 'gcr.io/cloud-builders/gcloud'
   args: [
-    'compute', 'ssh', 'instance-2', '--region', 'us-west4',
-    '--command', 'sudo kubectl set image deployments.apps/coen-chat-deployment gcr.io/$PROJECT_ID/coen-chat:$SHORT_SHA'
+    'compute', 'ssh', 'instance-2', '--region', 'us-west4-b',
+#    '--command', 'sudo kubectl set image deployments.apps/coen-chat-deployment gcr.io/$PROJECT_ID/coen-chat:$SHORT_SHA'
+    '--command', 'curl -X POST -H "Content-type: application/json" --data "{\"text\":\"Github action success\"}" https://hook.swit.io/chat/230704020620x2fEHM4/lV8EFcPY5xpR7qldXhZO?organization_id=19090600325683321'
   ]
 
 options:
